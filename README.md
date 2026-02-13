@@ -1,16 +1,48 @@
-# React + Vite
+# THE CRAFT ⚙️💀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**The Craft** es un ecommerce exclusivo de Drops limitados de decoración gótica impresa en 3D. El sitio combina una estética oscura y minimalista con tecnología moderna para ofrecer una experiencia de compra mística y premium.
 
-Currently, two official plugins are available:
+## 🌌 Visión y Estética
+- **Estilo**: Minimalista, Elegante, Moderno Tech, Mística Sutil.
+- **Paleta**: 
+  - Dark Mode (Default): Background `#1C0F26`, Accordion/Cards `#261434`, Accent `#A36DFF`.
+  - Light Mode: Background `#F7F7FB`, Cards `#FFFFFF`.
+- **Identidad**: Uso de efectos de glassmorphism, resplandores místicos (glow) y un logo circular "hanging" que protagoniza la interfaz.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
+- **Frontend**: React + Vite
+- **Navegación**: React Router v6
+- **Estilos**: Vanilla CSS (Variables globales, Mobile First)
+- **Backend**: Firebase Auth + Firestore
+- **Iconografía**: Tipografía Roboto (400-700)
 
-## React Compiler
+## 🚀 Estado Actual del Proyecto (Base Completada)
+Actualmente el proyecto cuenta con la base estructural lista para el escalamiento por módulos:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Infraestructura Core
+- [x] Configuración de **Firebase SDK** (Auth & Firestore).
+- [x] **Theme Context**: Sistema de cambio de modo Oscuro/Claro persistente.
+- [x] **Sistema de Roles**: Estructura preparada para `user`, `admin` y `superadmin`.
+- [x] **Modelos de Datos**: Definición de interfaces para Firestore (Users, Products, Orders, Drops).
 
-## Expanding the ESLint configuration
+### Diseño y Layout
+- [x] **Navbar Premium**: Efecto glassmorphism, logo circular solapado y animaciones suaves.
+- [x] **Componentes Reutilizables**: `Button`, `Card`, `Container`, `PageWrapper`.
+- [x] **Layout Principal**: Estructura de navegación persistente con Footer elegante.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Páginas y Navegación
+- [x] **Home**: Hero section, simulador de drop (countdown y barra de progreso).
+- [x] **Rutas Configuradas**: 
+  - `/` (Home)
+  - `/drop` (Catálogo de Drops)
+  - `/product/:id` (Detalle de Producto)
+  - `/profile` (Perfil de Usuario)
+  - `/admin` (Panel de Administración)
+
+## 📦 Instalación y Uso
+1. Clonar el repositorio.
+2. Ejecutar `npm install`.
+3. Iniciar el servidor de desarrollo: `npm run dev`.
+
+---
+*Created with passion by [The Craft Team]*
