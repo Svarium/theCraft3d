@@ -1,0 +1,23 @@
+.footer {
+    padding: 2rem 0;
+    border-top: 1px solid rgba(163, 109, 255, 0.1);
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
