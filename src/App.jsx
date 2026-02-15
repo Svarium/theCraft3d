@@ -6,6 +6,10 @@ import Drop from './pages/Drop';
 import ProductDetail from './pages/ProductDetail';
 import Profile from './pages/Profile';
 import Admin from './pages/Admin';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ProtectedRoute from './components/layout/ProtectedRoute';
+import PublicRoute from './components/layout/PublicRoute';
 
 function App() {
   return (
@@ -15,8 +19,29 @@ function App() {
           <Route index element={<Home />} />
           <Route path="drop" element={<Drop />} />
           <Route path="product/:id" element={<ProductDetail />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="admin" element={<Admin />} />
+
+          <Route path="login" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          <Route path="register" element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          } />
+
+          <Route path="profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+
+          <Route path="admin" element={
+            <ProtectedRoute allowedRoles={['admin', 'superadmin']}>
+              <Admin />
+            </ProtectedRoute>
+          } />
         </Route>
       </Routes>
     </Router>

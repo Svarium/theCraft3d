@@ -131,3 +131,22 @@
         letter-spacing: 1px;
     }
 }
+
+.logout-btn {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: var(--card-bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(163, 109, 255, 0.4);
+}

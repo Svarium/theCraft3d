@@ -46,3 +46,40 @@ Actualmente el proyecto cuenta con la base estructural lista para el escalamient
 
 ---
 *Created with passion by [The Craft Team]*
+
+## 🔐 Iteración 2 — Sistema de Autenticación y Roles
+
+Implementación robusta de autenticación con Firebase, gestión de roles y protección de rutas.
+
+### **Características Principales**
+1.  **Contexto Global (`AuthContext`):**
+    *   Gestiona el estado del usuario (`auth/firestore`) a través de toda la app.
+    *   **Auto-healing:** Si un usuario entra con datos incompletos (ej. sin nombre), el sistema intenta corregirlos automáticamente en el siguiente inicio de sesión.
+    *   **Persistencia:** La sesión se mantiene activa aunque se recargue la página.
+
+2.  **Métodos de Acceso:**
+    *   **Google Sign-In:** Registro/Login en un click. Captura automática de **Foto de Perfil** y Nombre.
+    *   **Email/Password:** Registro con validación de contraseña.
+    *   **Verificación de Email:** Envío automático de correo de verificación (Firebase) al registrarse. Estado visible en el Perfil.
+
+3.  **Roles y Permisos:**
+    *   **Roles:** `user`, `admin`, `superadmin`.
+    *   **Hooks:** `useRole` para verificar permisos fácilmente (`isAdmin`, `hasRole`).
+    *   **Reglas de Firestore:** Seguridad configurada para que cada usuario solo pueda leer/escribir su propia información.
+
+4.  **UX / UI Mejorada:**
+    *   **Protección de Rutas:**
+        *   `ProtectedRoute`: Bloquea acceso a no autenticados (o roles sin permiso).
+        *   `PublicRoute`: Evita que usuarios logueados entren a login/registro.
+    *   **Feedback Visual:** Componente `Loader` para transiciones de carga, login y verificaciones.
+    *   **Perfil de Usuario:** Visualización de Avatar (Foto de Google o Inicial), Rol, Email y Estado de Verificación.
+
+### **Tecnologías Usadas**
+*   **Firebase Auth:** Google Provider, EmailProvider, EmailVerification.
+*   **Firestore:** Base de datos NoSQL para datos extendidos de usuario.
+*   **React Router v6:** Gestión de navegación y redirecciones.
+*   **Context API:** Estado global.
+
+### **Próximos Pasos**
+*   Implementación del Carrito de Compras (Persistence + Drawer UI).
+*   Panel de Administración.

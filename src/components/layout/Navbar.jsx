@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
+import { useRole } from '../../hooks/useRole';
 import logo from '../../assets/LOGO.png';
 import './Navbar.css';
 
 const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
+    const { user, logout } = useAuth();
+    const { isAdmin } = useRole();
 
     return (
         <nav className="navbar">
@@ -25,11 +29,36 @@ const Navbar = () => {
                             Drop
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''}>
-                            Profile
-                        </NavLink>
-                    </li>
+
+                    {isAdmin && (
+                        <li>
+                            <NavLink to="/admin" className={({ isActive }) => isActive ? 'active' : ''}>
+                                Admin
+                            </NavLink>
+                        </li>
+                    )}
+
+                    {user ? (
+                        <>
+                            <li>
+                                <NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''}>
+                                    Profile
+                                </NavLink>
+                            </li>
+                            <li>
+                                <button onClick={logout} className="nav-btn logout-btn">
+                                    Logout
+                                </button>
+                            </li>
+                        </>
+                    ) : (
+                        <li>
+                            <NavLink to="/login" className={({ isActive }) => isActive ? 'active' : ''}>
+                                Login
+                            </NavLink>
+                        </li>
+                    )}
+
                     <li>
                         <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle theme">
                             {theme === 'dark' ? '☼' : '☾'}
