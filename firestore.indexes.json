@@ -1,0 +1,33 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "drops",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "isActive",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "products",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "dropId",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

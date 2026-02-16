@@ -11,13 +11,24 @@ import Register from './pages/Register';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import PublicRoute from './components/layout/PublicRoute';
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <Router>
+      <Toaster position="bottom-right" toastOptions={{
+        style: {
+          background: '#261434',
+          color: '#fff',
+          border: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(10px)'
+        }
+      }} />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="drop" element={<Drop />} />
+          <Route path="drop/:id" element={<Drop />} />
           <Route path="product/:id" element={<ProductDetail />} />
 
           <Route path="login" element={

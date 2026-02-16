@@ -83,3 +83,29 @@ Implementación robusta de autenticación con Firebase, gestión de roles y prot
 ### **Próximos Pasos**
 *   Implementación del Carrito de Compras (Persistence + Drawer UI).
 *   Panel de Administración.
+
+## 🔥 Iteración 3 — Sistema de Drops y Catálogo Dinámico
+
+Implementación de la gestión de contenido con Firestore y Cloudinary, permitiendo un catálogo dinámico y visualmente rico.
+
+### **Características Técnicas**
+1.  **Cloudinary Integration:**
+    *   **Servicio de Subida:** `cloudinaryService.js` maneja uploads unsigned a `dr10cqnsp/the-craft`.
+    *   **SDK Optimizado:** Uso de `@cloudinary/react` para renderizar imágenes con `f_auto`, `q_auto`, `resize` y `autoGravity` para performance máxima.
+
+2.  **Gestión de Modelos (Firestore):**
+    *   **Drops:** `{ name, description, coverImage, isActive }`.
+    *   **Productos:** `{ name, price, stock, images: [], dropId }`.
+
+3.  **Panel de Administración (Admin Dashboard):**
+    *   **Drop Manager:** ABM completo de Drops con subida de imagen de portada.
+    *   **Product Manager:** ABM de productos con asociación a Drops y galería de imágenes múltiple.
+    *   **Image Uploader:** Componente reutilizable con previsualización y validación de tipos/peso.
+    *   **Validaciones:** Prevención de borrado accidental de Drops con productos asociados.
+
+4.  **Seguridad:**
+    *   Acceso restringido por rol (`admin`, `superadmin`) en `ProtectedRoute`.
+    *   Validaciones de archivo (tipo y tamaño) en cliente antes de subir.
+
+### **Resultado Esperado**
+Un sistema CMS (Content Management System) integrado donde el administrador puede lanzar nuevos Drops y cargar productos con imágenes de alta calidad sin tocar el código.

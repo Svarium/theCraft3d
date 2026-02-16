@@ -3,48 +3,113 @@ import PageWrapper from '../components/ui/PageWrapper';
 import Container from '../components/ui/Container';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import Loader from '../components/ui/Loader';
+import { collection, query, where, getDocs, limit, orderBy } from 'firebase/firestore';
+import { db } from '../config/firebase';
 import './Home.css';
 
 const Home = () => {
-    const [timeLeft, setTimeLeft] = useState({
-        days: 2,
-        hours: 14,
-        minutes: 32,
-        seconds: 45
-    });
+    const [activeDrop, setActiveDrop] = useState(null);
+    const [stats, setStats] = useState({ sold: 0, total: 0 });
+    const [loading, setLoading] = useState(true);
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-    // Simple countdown simulation logic
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-                if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-                if (prev.hours > 0) return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-                if (prev.days > 0) return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-                return prev;
-            });
-        }, 1000);
-        return () => clearInterval(timer);
+        const fetchHomeData = async () => {
+            try {
+                // 1. Get most recently created active drop
+                const q = query(
+                    collection(db, "drops"),
+                    where("isActive", "==", true),
+                    orderBy("createdAt", "desc"),
+                    limit(1)
+                );
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    const dropData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+                    setActiveDrop(dropData);
+
+                    // 2. Get real stats for this drop
+                    const pq = query(collection(db, "products"), where("dropId", "==", dropData.id));
+                    const pSnapshot = await getDocs(pq);
+
+                    let totalStock = 0;
+                    pSnapshot.forEach(doc => {
+                        totalStock += (doc.data().stock || 0);
+                    });
+
+                    // For now, sold pieces is simulated as % of total or hardcoded until orders are implemented
+                    // Setting a realistic baseline based on total stock
+                    setStats({ sold: Math.floor(totalStock * 0.4), total: totalStock });
+                }
+            } catch (error) {
+                console.error("Error fetching home data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHomeData();
     }, []);
 
-    const dropProgress = 23;
-    const totalPieces = 50;
-    const progressPercentage = (dropProgress / totalPieces) * 100;
+    useEffect(() => {
+        if (!activeDrop?.endDate) return;
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = new Date(activeDrop.endDate).getTime() - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+            } else {
+                setTimeLeft({
+                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((distance % (1000 * 60)) / 1000)
+                });
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [activeDrop]);
+
+    if (loading) return <Loader fullScreen />;
+
+    if (!activeDrop) {
+        return (
+            <PageWrapper>
+                <Container>
+                    <div style={{ textAlign: 'center', paddingTop: '4rem' }}>
+                        <h1>No Active Drops</h1>
+                        <p>Stay tuned for the next release.</p>
+                    </div>
+                </Container>
+            </PageWrapper>
+        );
+    }
+
+    const progressPercentage = stats.total > 0 ? (stats.sold / stats.total) * 100 : 0;
 
     return (
         <PageWrapper className="home-page">
-            <section className="hero">
+            <section className="hero" style={{
+                backgroundImage: activeDrop.coverImage ? `linear-gradient(rgba(28, 15, 38, 0.8), rgba(28, 15, 38, 0.95)), url(${activeDrop.coverImage.url})` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}>
                 <Container>
                     <div className="hero-content">
-                        <span className="hero-subtitle">Limited Drop 001</span>
-                        <h1 className="hero-title">NOCTURNA <span className="accent-text">CRAFT</span></h1>
+                        <span className="hero-subtitle">Active Drop</span>
+                        <h1 className="hero-title">{activeDrop.name}</h1>
                         <p className="hero-description">
-                            Exquisite gothic 3D printing. Each piece is a testament to the shadows,
-                            crafted for those who dwell in the elegance of the night.
+                            {activeDrop.description}
                         </p>
                         <div className="hero-actions">
-                            <Button onClick={() => window.location.href = '/drop'}>View Drop</Button>
-                            <Button variant="outline">Learn More</Button>
+                            <Button onClick={() => window.location.href = `/drop/${activeDrop.id}`}>View Drop</Button>
+                            <Button variant="outline" onClick={() => window.location.href = '/drop'}>All Collections</Button>
                         </div>
                     </div>
                 </Container>
@@ -82,7 +147,7 @@ const Home = () => {
                             <div className="progress-container">
                                 <div className="progress-header">
                                     <span className="info-label">Availability</span>
-                                    <span className="pieces-sold">{dropProgress} / {totalPieces} pieces sold</span>
+                                    <span className="pieces-sold">{stats.sold} / {stats.total} pieces available</span>
                                 </div>
                                 <div className="progress-bar-bg">
                                     <div
