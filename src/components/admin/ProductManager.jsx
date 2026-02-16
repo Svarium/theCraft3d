@@ -30,10 +30,17 @@ const ProductManager = () => {
     };
 
     const handleImageUpload = (imageData) => {
+        // Enforce limit of 3 images
+        if ((formData.images?.length || 0) >= 3) {
+            toast.error('Límite de 3 imágenes alcanzado');
+            return;
+        }
+
         setFormData(prev => ({
             ...prev,
             images: [...(prev.images || []), { url: imageData.secure_url, publicId: imageData.public_id }]
         }));
+        toast.success('Imagen añadida');
     };
 
     const removeImage = (index) => {

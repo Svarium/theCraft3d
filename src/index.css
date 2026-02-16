@@ -282,3 +282,144 @@ button {
   display: flex;
   flex-direction: column;
 }
+
+/* --- Product Card & Carousel --- */
+.product-card-premium {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 20px !important;
+  padding: 1rem !important;
+}
+
+.product-card-premium:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(163, 109, 255, 0.1);
+  border-color: rgba(163, 109, 255, 0.3) !important;
+}
+
+.product-card-visual {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-card-premium:hover .carousel-controls {
+  opacity: 1;
+}
+
+.carousel-btn {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: auto;
+  transition: all 0.2s ease;
+}
+
+.carousel-btn:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: var(--accent);
+  width: 15px;
+  border-radius: 10px;
+}
+
+.card-overlay-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(163, 109, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-card-premium:hover .card-overlay-btn {
+  opacity: 1;
+}
+
+.card-overlay-btn span {
+  background: white;
+  color: black;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.product-card-premium:hover .card-overlay-btn span {
+  transform: translateY(0);
+}
+
+.btn-detail-small {
+  margin-top: auto;
+  padding: 1rem;
+  background: rgba(163, 109, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(163, 109, 255, 0.2);
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.product-card-premium:hover .btn-detail-small {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 10px 20px rgba(163, 109, 255, 0.2);
+}

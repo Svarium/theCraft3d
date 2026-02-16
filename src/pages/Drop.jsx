@@ -7,6 +7,60 @@ import Card from '../components/ui/Card';
 import { collection, query, where, getDocs, orderBy, doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
+const ProductCard = ({ product, navigate }) => {
+    const [currentImg, setCurrentImg] = useState(0);
+    const images = product.images || [];
+
+    const nextImg = (e) => {
+        e.stopPropagation();
+        setCurrentImg((prev) => (prev + 1) % images.length);
+    };
+
+    const prevImg = (e) => {
+        e.stopPropagation();
+        setCurrentImg((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    return (
+        <Card className="product-card-premium" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }} onClick={() => navigate(`/product/${product.id}`)}>
+            <div className="product-card-visual" style={{ height: '320px', overflow: 'hidden', borderRadius: '12px', position: 'relative' }}>
+                <img
+                    src={images[currentImg]?.url}
+                    alt={product.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.5s ease' }}
+                />
+
+                {images.length > 1 && (
+                    <>
+                        <div className="carousel-controls">
+                            <button className="carousel-btn prev" onClick={prevImg}>‹</button>
+                            <button className="carousel-btn next" onClick={nextImg}>›</button>
+                        </div>
+                        <div className="carousel-dots">
+                            {images.map((_, i) => (
+                                <span key={i} className={`dot ${currentImg === i ? 'active' : ''}`} />
+                            ))}
+                        </div>
+                    </>
+                )}
+
+                <div className="card-overlay-btn">
+                    <span>VER DETALLE</span>
+                </div>
+            </div>
+
+            <div style={{ padding: '1.5rem 0 0.5rem 0', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <h4 style={{ fontSize: '1.2rem', margin: 0 }}>{product.name}</h4>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem', marginBottom: '1rem' }}>
+                    <span style={{ color: 'var(--accent)', fontWeight: '800', fontSize: '1.1rem' }}>${product.price}</span>
+                    <span style={{ fontSize: '0.8rem', opacity: 0.5 }}>{product.stock} left</span>
+                </div>
+                <button className="btn-detail-small">VER PIEZA →</button>
+            </div>
+        </Card>
+    );
+};
+
 const Drop = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -67,18 +121,7 @@ const Drop = () => {
                 <Container>
                     <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2.5rem', paddingBottom: '5rem' }}>
                         {data.products.map(product => (
-                            <Card key={product.id} className="product-card-premium" style={{ cursor: 'pointer' }} onClick={() => navigate(`/product/${product.id}`)}>
-                                <div style={{ height: '320px', overflow: 'hidden', borderRadius: '12px' }}>
-                                    <img src={product.images?.[0]?.url} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                </div>
-                                <div style={{ padding: '1.5rem 0 0.5rem 0' }}>
-                                    <h4 style={{ fontSize: '1.2rem', margin: 0 }}>{product.name}</h4>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.75rem' }}>
-                                        <span style={{ color: 'var(--accent)', fontWeight: '800', fontSize: '1.1rem' }}>${product.price}</span>
-                                        <span style={{ fontSize: '0.8rem', opacity: 0.5 }}>{product.stock} left</span>
-                                    </div>
-                                </div>
-                            </Card>
+                            <ProductCard key={product.id} product={product} navigate={navigate} />
                         ))}
                     </div>
                 </Container>
